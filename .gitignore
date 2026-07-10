@@ -1,0 +1,18 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# WorkBuddy
+.workbuddy/
+
+# Dependencies (keep libs/ for offline use)
+node_modules/
+
+# Build / zip output
+*.zip
+dist/
