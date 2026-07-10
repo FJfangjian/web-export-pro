@@ -8,7 +8,6 @@ body.hte-capture-mode .hte-capturable {
   outline: 2px dashed #667eea !important;
   outline-offset: 4px !important;
   cursor: pointer !important;
-  position: relative !important;
   transition: outline 0.15s ease, background-color 0.15s ease !important;
 }
 
@@ -18,12 +17,9 @@ body.hte-capture-mode .hte-capturable:hover {
   background-color: rgba(102, 126, 234, 0.04) !important;
 }
 
-/* 表格标识徽章 */
-body.hte-capture-mode .hte-capturable::before {
-  content: attr(data-hte-info);
-  position: absolute !important;
-  top: -28px !important;
-  left: 0 !important;
+/* 浮动标识徽章（JS 驱动，不碰元素自身定位） */
+.hte-capture-badge {
+  position: fixed !important;
   z-index: 999999 !important;
   background: linear-gradient(135deg, #667eea, #764ba2) !important;
   color: #fff !important;
@@ -36,6 +32,7 @@ body.hte-capture-mode .hte-capturable::before {
   white-space: nowrap !important;
   pointer-events: none !important;
   box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+  transition: opacity 0.15s ease !important;
 }
 
 

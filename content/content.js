@@ -51,28 +51,60 @@
 
     elements.forEach((element, idx) => {
       element.classList.add('hte-capturable');
-      element.setAttribute('data-hte-info', getElementCaptureInfo(element));
       element.setAttribute('data-hte-index', idx);
     });
 
     document.body.classList.add('hte-capture-mode');
+    refreshCaptureBadges();
 
     // 全局事件监听（捕获阶段，优先处理）
     document.addEventListener('click', onTableClick, true);
     document.addEventListener('keydown', onKeyDown, true);
-    document.addEventListener('scroll', updateHighlightsOnScroll, true);
+    document.addEventListener('scroll', onCaptureScroll, true);
+    window.addEventListener('resize', onCaptureScroll, true);
 
     showToast(`发现 ${elements.length} 个可捕获内容，点击表格导出数据，点击其他内容导出可见内容`);
+  }
+
+  function onCaptureScroll() {
+    requestAnimationFrame(refreshCaptureBadges);
+  }
+
+  // 浮动徽章管理
+  let captureBadges = [];
+
+  function refreshCaptureBadges() {
+    // 清除旧徽章
+    captureBadges.forEach(b => b.remove());
+    captureBadges = [];
+
+    const elements = document.querySelectorAll('.hte-capturable');
+    elements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      // 仅当元素在视口内且可见时显示徽章
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+      const badge = document.createElement('div');
+      badge.className = 'hte-capture-badge';
+      badge.textContent = getElementCaptureInfo(el);
+      badge.style.left = rect.left + 'px';
+      badge.style.top = (rect.top - 28) + 'px';
+      document.body.appendChild(badge);
+      captureBadges.push(badge);
+    });
   }
 
   function exitCaptureMode() {
     if (!captureMode) return;
     captureMode = false;
 
+    // 清除浮动徽章
+    captureBadges.forEach(b => b.remove());
+    captureBadges = [];
+
     // 恢复所有可捕获元素
     document.querySelectorAll('.hte-capturable').forEach(element => {
       element.classList.remove('hte-capturable');
-      element.removeAttribute('data-hte-info');
       element.removeAttribute('data-hte-index');
     });
 
@@ -80,7 +112,8 @@
 
     document.removeEventListener('click', onTableClick, true);
     document.removeEventListener('keydown', onKeyDown, true);
-    document.removeEventListener('scroll', updateHighlightsOnScroll, true);
+    document.removeEventListener('scroll', onCaptureScroll, true);
+    window.removeEventListener('resize', onCaptureScroll, true);
 
     hideExportPanel();
     selectedTable = null;
@@ -106,12 +139,6 @@
     if (e.key === 'Escape') {
       exitCaptureMode();
     }
-  }
-
-  function updateHighlightsOnScroll() {
-    // 滚动时badge需要重新定位（它们使用absolute定位相对于table）
-    // CSS已经处理了：badge使用position: absolute，相对于table定位
-    // 不需要额外处理
   }
 
   function getCapturableElements() {
