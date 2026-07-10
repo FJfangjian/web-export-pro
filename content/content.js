@@ -1006,6 +1006,7 @@
             <option value="csv">CSV (.csv)</option>
             <option value="doc">Word (.doc)</option>
             <option value="pdf">PDF</option>
+            <option value="json">JSON (.json)</option>
           </select>
         </div>
         <button class="hte-btn hte-btn-export">⬇ 导出</button>
@@ -1057,6 +1058,24 @@
     if (format === 'csv') {
       downloadTextFile(`${name}.csv`, toCsv(data), 'text/csv;charset=utf-8');
       showToast(`已导出: ${name}.csv`);
+      return;
+    }
+
+    if (format === 'json') {
+      const payload = {
+        name,
+        exportedAt: new Date().toISOString(),
+        rows: data.length,
+        cols: data[0] ? data[0].length : 0,
+        header: data[0] || [],
+        data: data.slice(1).map(row => {
+          const obj = {};
+          (data[0] || []).forEach((key, i) => { obj[key] = row[i] || ''; });
+          return obj;
+        }),
+      };
+      downloadTextFile(`${name}.json`, JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
+      showToast(`已导出: ${name}.json`);
       return;
     }
 
