@@ -1,0 +1,39 @@
+{
+  "name": "网页内容导出工具",
+  "version": "1.1.0",
+  "description": "一键捕获网页上的表格数据，导出为Excel(.xlsx) / Word(.doc) / PDF，支持单表导出和全页导出",
+  "manifest_version": 3,
+  "author": "阿布",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "网页内容导出工具",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["libs/xlsx.full.min.js", "content/content.js"],
+      "css": ["content/content.css"]
+    }
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

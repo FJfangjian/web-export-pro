@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>网页内容导出</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">📊</div>
+      <div class="title-group">
+        <h1>网页内容导出</h1>
+        <p class="subtitle">截取网页表格或页面元素，一键导出 Excel / Word / PDF</p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="btn-capture" class="btn btn-primary">
+        <span class="btn-icon">🔍</span>
+        <span class="btn-text">进入捕获模式</span>
+        <span class="btn-hint">点击表格或页面元素</span>
+      </button>
+      <button id="btn-image-capture" class="btn btn-secondary">
+        <span class="btn-icon">🖼️</span>
+        <span class="btn-text">可见内容导出</span>
+        <span class="btn-hint">拖选网页区域导出可见内容</span>
+      </button>
+    </div>
+
+    <div class="status" id="status">
+      <span id="status-text">就绪，选择一个操作</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="tips">
+      <p class="tip-title">使用提示</p>
+      <ul>
+        <li>捕获模式下，点击表格导出表格数据，点击页面元素导出可见内容</li>
+        <li>拖选区域后会先显示预览，确认后再导出</li>
+        <li>按 <kbd>ESC</kbd> 可退出捕获或拖选模式</li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
